@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>PHP Sample Project</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">PHP Connect Sample</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            <fieldset>
+                <legend>
+                    Get Public Invoice
+                </legend>
+                <p>This is an example of getting data that requires a client access token. The merchant's server first gets a token for this sample client using the client's credentials, then sends that client token to the endpoint to get public information for the supplied invoice ID.</p>
+                <div class="form-group">
+                    <label for="public-invoice-id">Invoice ID</label>
+                    <input type="text" class="form-control" id="public-invoice-id">
+                </div>
+                <button class="btn btn-default" onclick="getPublicInvoice();">Get Public Invoice</button>
+            </fieldset>
+            <table class="table public-user" style="display:none;">
+                <tr>
+                    <td>ID</td>
+                    <td id="public-id-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td id="public-description-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Amount</td>
+                    <td id="public-amount-value"><span class="value"></span>&nbsp;<span class="currency"></span></td>
+                </tr>
+                <tr>
+                    <td>Amount Due</td>
+                    <td id="public-amount-due-value"><span class="value"></span>&nbsp;<span class="currency"></span></td>
+                </tr>
+                <tr>
+                    <td>Invoice Date</td>
+                    <td id="public-invoice-date-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Due Date</td>
+                    <td id="public-due-date-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Note</td>
+                    <td id="public-note-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Terms</td>
+                    <td id="public-terms-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td id="public-status-value">&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row" style="margin-top:2em;">
+        <div class="col-sm-10 col-sm-offset-1">
+            <fieldset>
+                <legend>
+                    Get User
+                </legend>
+                <p>This call requires user authentication with OAuth. When you submit this form, the server will first get a client token, then use that token to begin the authorization process. The first step will be to send an SMS message to the supplied phone number.</p>
+                <p>When the user replies to the SMS message, Romit's servers will notify the supplied redirect URI with a code. When that happens, the merchant's servers can call Romit's servers to exchange that code for an authorization token.</p>
+                <p>Once the merchant's servers have the authorization token, they can then make authorized calls like this call to get a user's details.</p>
+                <form>
+                    <div class="form-group">
+                        <label for="phone">Phone E164 (e.g. +15551234567)</label>
+                        <input type="tel" id="phone" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last name</label>
+                        <input type="text" id="last-name" class="form-control">
+                    </div>
+                </form>
+                <button class="btn btn-default" onclick="launchOauth();">Connect With Romit</button>
+            </fieldset>
+            <table class="table user" style="display:none;">
+                <tr>
+                    <td>ID</td>
+                    <td id="id-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Created</td>
+                    <td id="created-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td id="email-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>First</td>
+                    <td id="first-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Last</td>
+                    <td id="last-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Level</td>
+                    <td id="level-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td id="phone-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td id="status-value">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td id="type-value">&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="text-center">For the source of this application, see the <a href="https://github.com/RoboCoin/romit-connect-sample-php">public repo</a>.</p>
+        </div>
+    </div>
+</div><!-- /.container -->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script>
+
+    function launchOauth() {
+
+        var postData = {
+            'phone': $('#phone').val(),
+            'email': $('#email').val(),
+            'first-name': $('#first-name').val(),
+            'last-name': $('#last-name').val()
+        };
+        $.post('/start-oauth.php', postData, function () {
+
+            function pollForAccessToken() {
+
+                $.get('/has-access-token.php', function (data) {
+
+                    if (data == '1') {
+
+                        $.get('/get-user.php', function (data) {
+
+                            $('#created-value').html(data['created']);
+                            $('#email-value').html(data['email']);
+                            $('#first-value').html(data['first']);
+                            $('#id-value').html(data['id']);
+                            $('#last-value').html(data['last']);
+                            $('#level-value').html(data['level']);
+                            $('#phone-value').html(data['phone']);
+                            $('#status-value').html(data['status']);
+                            $('#type-value').html(data['type']);
+                            $('table.user').show();
+                        });
+
+                    } else {
+                        setTimeout(pollForAccessToken, 3000);
+                    }
+                });
+            }
+
+            pollForAccessToken();
+        });
+    }
+
+    function getPublicInvoice() {
+
+        $.get('/get-public-invoice.php?invoiceId=' + encodeURIComponent($('#public-invoice-id').val()), function (data) {
+            $('#public-id-value').html(data['id']);
+            $('#public-description-value').html(data['description']);
+            $('#public-amount-value .value').html(data['amount']['value']);
+            $('#public-amount-value .currency').html(data['amount']['currency']);
+            $('#public-amount-due-value .value').html(data['amountDue']['value']);
+            $('#public-amount-due-value .currency').html(data['amountDue']['currency']);
+            $('#public-invoice-date-value').html(data['invoiceDate']);
+            $('#public-due-date-value').html(data['dueDate']);
+            $('#public-note-value').html(data['note']);
+            $('#public-terms-value').html(data['terms']);
+            $('#public-status-value').html(data['status']);
+            $('table.public-user').show();
+        });
+    }
+
+</script>
+</body>
+</html>
